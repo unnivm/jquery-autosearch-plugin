@@ -8,6 +8,7 @@
 })( jQuery );
 
 jQuery.autosearch = function(input, option, suggestions){
+	
 	var outp;
 	var oldins;
 	var posi = -1;
@@ -17,7 +18,7 @@ jQuery.autosearch = function(input, option, suggestions){
 	var x;
 	var color="red";
 	var currColor="";
-	var rowHeight = option.rowHeight;
+	var rowHeight = (option.rowHeight == '' || option.rowHeight == undefined)?25:option.rowHeight;
 	var gridHeight = 200;
 	var itemInGrid = 0;
     var cnt = -1;
@@ -26,10 +27,14 @@ jQuery.autosearch = function(input, option, suggestions){
     var suggestions;
 	var $input = $(input).attr("autocomplete", "off");
 	var width = input.offsetWidth;
-    var fontType = option.fontType;
-    var fontNormal = option.fontStyle;
+    var fontType =   ( option.fontType == ''  ||  option.fontType  == undefined ) ? "":option.fontType ;
+    var fontNormal = ( option.fontStyle == '' ||  option.fontStyle == undefined ) ? "":option.fontStyle ;
+	var bgColor =    ( option.bgColor == ''   ||  option.bgColor   == undefined ) ? "blue": option.bgColor;
+	
+	var searchHighlight;
+
 	init();
-	 function init(){
+	function init(){
       suggestions = suggestions;
 	  createDiv();
 	  outp = document.createElement("div");
@@ -187,8 +192,9 @@ jQuery.autosearch = function(input, option, suggestions){
   var mouseHandler=function(){
 		for (var i=0; i < words.length; ++i)
 		setDivColor (i, "white", "black");
-		this.style.background = option.bgColor;
+		this.style.background = bgColor;
 		this.style.color= "white";
+		$input.val(this.firstChild.nodeValue);
 	};
 	
 	var mouseHandlerOut=function(){
@@ -197,15 +203,14 @@ jQuery.autosearch = function(input, option, suggestions){
 	};
 	
 	var mouseClick=function(){
-		document.getElementsByName("text")[0].value = this.firstChild.nodeValue;
-		//$input.val(this.firstChild.nodeValue);
+		$input.val(this.firstChild.nodeValue);
 		setVisible("hidden");
 		posi = -1;
 		oldins = this.firstChild.nodeValue;
 	};
 
 $input.blur(function(e){
- clearOutput();
+ //clearOutput();
 });
 
 
@@ -223,7 +228,7 @@ function keyHandler(event){
 			if (words.length > 0 && posi < words.length-1){
 				if (posi >=0) setDivColor(posi, "#fff", "black");
 				else input =  $input.val();
-				setDivColor(++posi, option.bgColor, "white");
+				setDivColor(++posi, bgColor, "white");
 			    cnt=cnt+1;
 				if(!noScroll){
 				if(cnt >= itemInGrid) {
@@ -239,7 +244,7 @@ function keyHandler(event){
 			if (words.length > 0 && posi > 0){
 				if (posi >=1){
 					setDivColor(posi, "#fff", "black");
-					setDivColor(--posi,  option.bgColor, "white");
+					setDivColor(--posi, bgColor, "white");
 					cnt=cnt-1;
 				if(!noScroll){
 				if(cnt < 0) {
@@ -259,7 +264,7 @@ function keyHandler(event){
 			}
 		}
 		else if (key == 27){ // Esc
-			textfield.value = input;
+			$input.val(outp.childNodes[posi].firstChild.nodeValue);
 			setVisible("hidden");
 			posi = -1;
 			oldins = input;
@@ -269,7 +274,8 @@ function keyHandler(event){
 			oldins=-1;
 		}
 		else if(key == 13){ 
-	
+			$input.val(outp.childNodes[posi].firstChild.nodeValue);
+			clearOutput();
 		   }
 		}
 	};
