@@ -43,9 +43,10 @@ jQuery.autosearch = function(input, option, suggestions){
     var suggestions;
 	var $input = $(input).attr("autocomplete", "off");
 	var width = input.offsetWidth;
-    var fontType =   ( option.fontType == ''  ||  option.fontType  == undefined ) ? "":option.fontType ;
-    var fontNormal = ( option.fontStyle == '' ||  option.fontStyle == undefined ) ? "":option.fontStyle ;
-	var bgColor =    ( option.bgColor == ''   ||  option.bgColor   == undefined ) ? "blue": option.bgColor;
+    var fontType   =   ( option.fontType == ''  ||  option.fontType  == undefined ) ? "":option.fontType ;
+    var fontNormal =   ( option.fontStyle == '' ||  option.fontStyle == undefined ) ? "":option.fontStyle ;
+	var bgColor    =   ( option.bgColor == ''   ||  option.bgColor   == undefined ) ? "blue": option.bgColor;
+	var fontSize   =   ( option.fontSize == ''  ||  option.fontSize   == undefined ) ? "12": option.fontSize;
 	
 	var searchHighlight;
 
@@ -156,7 +157,8 @@ jQuery.autosearch = function(input, option, suggestions){
 		sp.appendChild(document.createTextNode(word));
 		sp.style.height= rowHeight + "px";
 		sp.style.fontFamily = fontType;
-		sp.style.fontNormal = fontNormal;
+		sp.style.fontWeight = fontNormal;
+		sp.style.fontSize = fontSize+"px";
 		sp.onmouseover = mouseHandler;
 		sp.onmouseout = mouseHandlerOut;
 		sp.onclick = mouseClick;
